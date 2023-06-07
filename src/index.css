@@ -1,0 +1,9 @@
+h1 {
+  font-size: 3.5vw;
+  line-height: 1.1;
+}
+h2 {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 2vw;
+  letter-spacing: 1px;
+}

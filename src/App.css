@@ -1,0 +1,72 @@
+.main_wrapper {
+  background-image: url(https://images.unsplash.com/photo-1561477761-5a77f8dbf8de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80);
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: 200px 150px;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main_container {
+  min-width: 300px;
+  width: 90%;
+  height: 90vh;
+  min-height: 500px;
+  z-index: 2;
+  overflow: hidden;
+  box-shadow: 0 5px 30px rgb(0 0 0 / 20%);
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.chat-title {
+  flex: 0 1 55px;
+  position: relative;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  text-transform: uppercase;
+  text-align: left;
+  display: flex;
+  padding: 10px 10px 10px 80px;
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+}
+h1,
+h2 {
+  font-weight: normal;
+  font-size: 10px;
+  margin: 0;
+  padding: 0;
+}
+h2 {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+
+.avatar {
+  position: absolute;
+  z-index: 1;
+  top: 8px;
+  left: 9px;
+  border-radius: 30px;
+  width: 45px;
+  height: 45px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  border: 2px solid rgba(255, 255, 255, 0.24);
+}
+
+img {
+  width: 100%;
+  height: auto;
+}

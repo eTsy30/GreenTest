@@ -1,0 +1,49 @@
+.container_ViewMessageComponent {
+  margin-bottom: auto;
+  overflow: auto;
+}
+
+.messages {
+  flex: 1 1 auto;
+  color: rgba(255, 255, 255, 0.5);
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.messages-content {
+  top: 0;
+  left: 0;
+  height: 101%;
+  width: 100%;
+}
+.message {
+  clear: both;
+  float: left;
+  padding: 6px 10px 7px;
+  border-radius: 10px 10px 10px 0;
+  background: rgba(0, 0, 0, 0.3);
+  margin: 10px 0;
+  font-size: 2vw;
+  line-height: 1.4;
+  margin-left: 35px;
+  position: relative;
+  color: aliceblue;
+  text-shadow: 0 1px 1px rgb(0 0 0 / 20%);
+}
+
+.timestamp {
+  position: absolute;
+  bottom: -15px;
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.message::before {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  border-top: 6px solid rgba(0, 0, 0, 0.3);
+  left: 0;
+  border-right: 7px solid transparent;
+}
