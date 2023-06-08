@@ -11,7 +11,7 @@ export const SendMessageComponent = () => {
         import.meta.env.VITE_API_APITOKENINSTANCE
       }`,
       {
-        chatId: `${phone}@c.us`,
+        chatId: phone ? `${phone}@c.us` : '375333900033@c.us',
         message: message,
       },
     );
@@ -29,8 +29,8 @@ export const SendMessageComponent = () => {
       <input
         placeholder="enter phone with code..."
         type="tel"
-        value={phone}
-        maxlength="14"
+        value={!phone ? '375333900033' : { phone }}
+        maxLength="14"
         required
         pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
         className="message-phone"
@@ -42,6 +42,7 @@ export const SendMessageComponent = () => {
         placeholder="enter your message..."
         type="text"
         value={message}
+        required
         className="message-input"
         onChange={(e) => {
           setMessage(e.target.value);
