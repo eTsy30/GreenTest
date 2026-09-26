@@ -57,7 +57,9 @@ export function ViewMessageComponent({ messages }) {
                   className={`message-status ${message.status ? `message-status-${message.status}` : ''}`}
                   title={STATUS_LABELS[message.status] ?? 'Отправлено'}
                 >
-                  {message.status === 'read' || message.status === 'delivered' ? '✓✓' : '✓'}
+                  {['failed', 'noAccount', 'notInGroup'].includes(message.status)
+                    ? '!'
+                    : message.status === 'read' || message.status === 'delivered' ? '✓✓' : '✓'}
                 </span>
               )}
             </span>

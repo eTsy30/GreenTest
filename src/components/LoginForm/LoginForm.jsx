@@ -10,14 +10,18 @@ export function readStoredCredentials() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
 
-    return raw ? JSON.parse(raw) : null;
+    const value = raw ? JSON.parse(raw) : null;
+    return typeof value?.idInstance === 'string' && value.idInstance.trim()
+      && typeof value?.apiTokenInstance === 'string' && value.apiTokenInstance.trim()
+      ? value
+      : null;
   } catch {
     return null;
   }
 }
 
 export function LoginForm({ onLogin, onError }) {
-  const stored = readStoredCredentials();
+  const [stored] = useState(readStoredCredentials);
 
   const [idInstance, setIdInstance] = useState(stored?.idInstance ?? '');
   const [apiTokenInstance, setApiTokenInstance] = useState(stored?.apiTokenInstance ?? '');

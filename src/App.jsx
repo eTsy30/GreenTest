@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import './App.css';
 import { createGreenApiClient } from './api/greenApi';
 import { readStoredCredentials, LoginForm } from './components/LoginForm/LoginForm';
@@ -15,6 +15,7 @@ function App() {
   const [chat, setChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState('');
+  const sessionVersion = useRef(0);
 
   const client = useMemo(() => {
     if (!credentials?.idInstance || !credentials?.apiTokenInstance) {
@@ -35,7 +36,15 @@ function App() {
         throw new Error('Сначала подключите инстанс GREEN-API.');
       }
 
-      const result = await client.checkWhatsapp(phone);
+      const version = sessionVersion.current;
+      let result;
+      try {
+        result = await client.checkWhatsapp(phone);
+      } catch (requestError) {
+        if (version !== sessionVersion.current) return;
+        throw requestError;
+      }
+      if (version !== sessionVersion.current) return;
 
       if (!result.existsWhatsapp) {
         throw new Error(
@@ -46,7 +55,6 @@ function App() {
       setChat({
         chatId: result.chatId || toChatId(phone),
         phoneChatId: toChatId(phone),
-        lid: result.chatId ?? '',
         phone,
         title: formatPhone(phone),
       });
@@ -67,7 +75,7 @@ function App() {
 
     if (message.chatName) {
       setChat((currentChat) =>
-        currentChat && currentChat.phone
+        currentChat && currentChat.title !== message.chatName
           ? { ...currentChat, title: message.chatName }
           : currentChat,
       );
@@ -81,7 +89,7 @@ function App() {
   }, []);
 
   const chatIdentifiers = useMemo(
-    () => (chat ? [chat.chatId, chat.lid, chat.phoneChatId].filter(Boolean) : []),
+    () => (chat ? [chat.chatId, chat.phoneChatId].filter(Boolean) : []),
     [chat],
   );
 
@@ -96,7 +104,15 @@ function App() {
         throw new Error('Сначала создайте чат.');
       }
 
-      const result = await client.sendMessage(chat.chatId, text);
+      const version = sessionVersion.current;
+      let result;
+      try {
+        result = await client.sendMessage(chat.chatId, text);
+      } catch (requestError) {
+        if (version !== sessionVersion.current) return;
+        throw requestError;
+      }
+      if (version !== sessionVersion.current) return;
 
       setMessages((currentMessages) => [
         ...currentMessages,
@@ -114,12 +130,14 @@ function App() {
   );
 
   const handleNewChat = () => {
+    sessionVersion.current += 1;
     setChat(null);
     setMessages([]);
     setError('');
   };
 
   const handleLogout = () => {
+    sessionVersion.current += 1;
     localStorage.removeItem('green-api-credentials');
     setCredentials(null);
     setChat(null);
