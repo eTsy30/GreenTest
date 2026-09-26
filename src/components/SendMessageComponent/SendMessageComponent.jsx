@@ -1,57 +1,61 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 import './SendMessageComponent.css';
-import axios from 'axios';
 
-export const SendMessageComponent = () => {
-  const [message, setMessage] = useState();
-  const [phone, sePhone] = useState();
-  async function handleSubmit() {
-    await axios.post(
-      ` ${import.meta.env.VITE_API_HOST}/waInstance${import.meta.env.VITE_API_IDINSTANCE}/sendMessage/${
-        import.meta.env.VITE_API_APITOKENINSTANCE
-      }`,
-      {
-        chatId: phone ? `${phone}@c.us` : '375333900033@c.us',
-        message: message,
-      },
-    );
-    setMessage('');
-    sePhone('');
-  }
-  document.onkeydown = function (evt) {
-    if (evt.keyCode == 13) {
-      handleSubmit();
+const MAX_LENGTH = 4000;
+
+export const SendMessageComponent = ({ onSend, onError }) => {
+  const [message, setMessage] = useState('');
+  const [isSending, setIsSending] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const text = message.trim();
+
+    if (!text || isSending) return;
+
+    setIsSending(true);
+    onError('');
+
+    try {
+      await onSend(text);
+      setMessage('');
+    } catch (error) {
+      onError(error.message);
+    } finally {
+      setIsSending(false);
     }
   };
 
   return (
-    <form className="message-box">
+    <form className="message-box" onSubmit={handleSubmit}>
       <input
-        placeholder="enter phone with code..."
-        type="tel"
-        value={!phone ? '375333900033' : { phone }}
-        maxLength="14"
-        required
-        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-        className="message-phone"
-        onChange={(e) => {
-          sePhone(e.target.value);
-        }}
-      />
-      <input
-        placeholder="enter your message..."
-        type="text"
-        value={message}
-        required
         className="message-input"
-        onChange={(e) => {
-          setMessage(e.target.value);
-        }}
+        type="text"
+        aria-label="Текст сообщения"
+        value={message}
+        maxLength={MAX_LENGTH}
+        onChange={(event) => setMessage(event.target.value)}
+        placeholder="Введите сообщение..."
+        disabled={isSending}
       />
 
-      <button className="message-submit" disabled={message ? false : true} onClick={handleSubmit}>
-        Send
+      <button
+        className="message-submit"
+        type="submit"
+        disabled={!message.trim() || isSending}
+        aria-label="Отправить"
+      >
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path d="M4 12 20 4l-6 16-2.5-6.5L4 12Z" fill="currentColor" />
+        </svg>
       </button>
     </form>
   );
+};
+
+SendMessageComponent.propTypes = {
+  onSend: PropTypes.func.isRequired,
+  onError: PropTypes.func.isRequired,
 };

@@ -1,49 +1,81 @@
-.container_ViewMessageComponent {
-  margin-bottom: auto;
-  overflow: auto;
+.message-list {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  background: #f5f7fa;
+  padding: 20px 24px;
 }
 
-.messages {
-  flex: 1 1 auto;
-  color: rgba(255, 255, 255, 0.5);
-  overflow: hidden;
-  position: relative;
-  width: 100%;
+.message-empty {
+  display: grid;
+  flex: 1;
+  margin: 0;
+  place-items: center;
+  color: #9aa3af;
+  text-align: center;
+  font-size: 14px;
 }
 
-.messages-content {
-  top: 0;
-  left: 0;
-  height: 101%;
-  width: 100%;
-}
 .message {
-  clear: both;
-  float: left;
-  padding: 6px 10px 7px;
-  border-radius: 10px 10px 10px 0;
-  background: rgba(0, 0, 0, 0.3);
-  margin: 10px 0;
-  font-size: 2vw;
-  line-height: 1.4;
-  margin-left: 35px;
-  position: relative;
-  color: aliceblue;
-  text-shadow: 0 1px 1px rgb(0 0 0 / 20%);
+  display: flex;
+  box-sizing: border-box;
+  max-width: min(70%, 520px);
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 12px 6px;
+  border-radius: 14px;
+  overflow-wrap: anywhere;
+  font-size: 15px;
+  line-height: 1.45;
 }
 
-.timestamp {
-  position: absolute;
-  bottom: -15px;
-  font-size: 9px;
-  color: rgba(255, 255, 255, 0.3);
+.message-text {
+  white-space: pre-wrap;
 }
 
-.message::before {
-  content: '';
-  position: absolute;
-  bottom: -6px;
-  border-top: 6px solid rgba(0, 0, 0, 0.3);
-  left: 0;
-  border-right: 7px solid transparent;
+.message-meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  align-self: flex-end;
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.message-incoming {
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  background: #fff;
+  color: #060608;
+  box-shadow: 0 1px 2px rgb(10 16 26 / 8%);
+}
+
+.message-outgoing {
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+  background: #016fe7;
+  color: #fff;
+}
+
+.message-status-failed {
+  color: #ff3b30;
+  opacity: 1;
+}
+
+.message-status-noAccount,
+.message-status-notInGroup {
+  color: #ff9500;
+  opacity: 1;
+}
+
+@media (max-width: 720px) {
+  .message-list {
+    padding: 12px;
+  }
+
+  .message {
+    max-width: 86%;
+  }
 }
